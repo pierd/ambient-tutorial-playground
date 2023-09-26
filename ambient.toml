@@ -1,0 +1,37 @@
+[package]
+id = "g6n2gyvtgsw6ymcb3rjnpwazvzk2oox9"
+name = "my_project"
+version = "0.0.1"
+content = { type = "Playable" }
+ambient_version = "0.3.0-nightly-2023-09-21"
+
+[dependencies]
+# base_assets = { path = "../Ambient/guest/rust/packages/std/base_assets" }
+# fps_controller = { path = "../Ambient/guest/rust/packages/std/fps_controller" }
+# character_animation = { path = "../Ambient/guest/rust/packages/std/character_animation" }
+# hide_cursor = { path = "../Ambient/guest/rust/packages/std/hide_cursor" }
+
+base_assets = { deployment = "5AHmgriArf3jPTcpSefBO" }
+fps_controller = { deployment = "12Jw6s2ngUIpLA6pbiS3oJ" }
+character_animation = { deployment = "42T888c8BcFMZqf80PhvYF" }
+hide_cursor = { deployment = "6Vs97bmINdTpIoXuESfIcQ" }
+
+[components]
+bouncy_created = { type = "Duration" }
+balls_per_frame = { type = "U32", attributes = [ "Networked" ] }
+input_timestamp = { type = "Duration", attributes = [ "Networked" ] }
+local_latency = { type = "Duration", attributes = [ "Resource" ] }
+latency = { type = "Duration", attributes = [ "Networked" ] }
+balls_to_spawn = { type = "U32", attributes = [ "Resource" ] }
+
+[message.ChangeBallRate.fields]
+rate = "U32"
+
+[message.SpawnBalls.fields]
+count = "U32"
+
+[message.Input.fields]
+timestamp = "Duration"
+
+[message.ReportLatency.fields]
+latency = "Duration"
