@@ -25,7 +25,7 @@ use packages::{
     fps_controller::components::use_fps_controller,
     this::{
         assets,
-        components::{balls_per_frame, bouncy_created, input_timestamp, latency, balls_to_spawn},
+        components::{balls_per_frame, balls_to_spawn, bouncy_created, input_timestamp, latency},
         messages::{ChangeBallRate, Input, ReportLatency, SpawnBalls},
     },
 };
@@ -84,13 +84,14 @@ pub fn main() {
     entity::add_component(entity::resources(), balls_to_spawn(), 0);
 
     Frame::subscribe(move |_| {
-        let rate = entity::get_component(entity::synchronized_resources(), balls_per_frame()).unwrap();
+        let rate =
+            entity::get_component(entity::synchronized_resources(), balls_per_frame()).unwrap();
         for _ in 0..rate {
             spawn_ball(true);
         }
 
         if entity::get_component(entity::resources(), balls_to_spawn()).unwrap_or_default() > 0 {
-            entity::mutate_component(entity::resources(), balls_to_spawn(), |c| *c -= 1 );
+            entity::mutate_component(entity::resources(), balls_to_spawn(), |c| *c -= 1);
             spawn_ball(true);
         }
     });
@@ -104,7 +105,11 @@ pub fn main() {
     });
 
     ChangeBallRate::subscribe(move |_, msg| {
-        entity::set_component(entity::synchronized_resources(), balls_per_frame(), msg.rate);
+        entity::set_component(
+            entity::synchronized_resources(),
+            balls_per_frame(),
+            msg.rate,
+        );
     });
 
     Input::subscribe(|ctx, msg| {
@@ -125,7 +130,7 @@ pub fn main() {
     });
 
     SpawnBalls::subscribe(|_, msg| {
-        entity::mutate_component(entity::resources(), balls_to_spawn(), |c| *c += msg.count );
+        entity::mutate_component(entity::resources(), balls_to_spawn(), |c| *c += msg.count);
     });
 
     // Entity::new()

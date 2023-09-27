@@ -88,12 +88,9 @@ pub fn main() {
 fn Status(hooks: &mut Hooks) -> Element {
     let mut elements = Vec::new();
     let rate = use_entity_component(hooks, entity::synchronized_resources(), balls_per_frame())
-        .0
         .unwrap_or_default();
     elements.push(Text::el(format!("Balls per frame: {}", rate)));
-    let input_latency = use_entity_component(hooks, entity::resources(), local_latency())
-        .0
-        .unwrap();
+    let input_latency = use_entity_component(hooks, entity::resources(), local_latency()).unwrap();
     elements.push(Text::el(format!("Input latency: {:?}", input_latency)));
     let mut player_latencies = use_query(hooks, (user_id(), latency()));
     player_latencies.sort_unstable();
